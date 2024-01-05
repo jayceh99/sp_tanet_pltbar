@@ -3,44 +3,58 @@ import pandas as pd
 import csv
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import MultipleLocator
-csv_filename = (r'C:\Users\jayce\Desktop\6.csv' )
-csv_data = []
-v45 = []
-v457 = []
-v479 = []
-v49 = []
-f = open(csv_filename , 'r')
-csv_data = [row for row in csv.reader(f)]
-workbook = openpyxl.workbook.Workbook()
-worksheet = workbook.active
-for row in csv_data:
-    worksheet.append(row)
+class c_sp_pltbar:
+    def __init__(self , csv_filename) -> None:
+        self.csv_filename = csv_filename
 
-sheet = workbook.worksheets[0]
+    def f_get_all_value(self):
+        csv_data = []
+        f = open(self.csv_filename , 'r')
+        csv_data = [row for row in csv.reader(f)]
+        workbook = openpyxl.workbook.Workbook()
+        worksheet = workbook.active
+        for row in csv_data:
+            worksheet.append(row)
+
+        self.sheet = workbook.worksheets[0]
+
+        del csv_data , f , workbook ,row
+
+    def f_plt_bar(self):
+        round_ = {'v4_Download':2 , 'v4_Upload':4 , 'v6_Download':3 , 'v6_Upload':5}
+        for k in round_:
+            range5_ = 0
+            range5_7 = 0
+            range7_9 = 0
+            range_9 = 0
+            #<5 5~7 7~9 >9
+            for i in range(6 , self.sheet.max_row+1):
+                value = float(self.sheet.cell(row = i , column = round_[k]).value)
+                if value < 5 :
+                    range5_ += 1
+                elif value >= 5 and value < 7 :
+                    range5_7 += 1
+                elif value >= 7 and value < 9 :
+                    range7_9 += 1
+                elif value >= 9 :
+                    range_9 += 1
+            x = [1,2,3,4]        
+            label = ['<5','5~7','7~9','>9']     
+            h = [range5_,range5_7,range7_9,range_9]   
+            plt.title(k,fontsize=24)
+            y_major_locator=MultipleLocator(5)
+            ax=plt.gca()
+            ax.yaxis.set_major_locator(y_major_locator)
+            plt.bar(x,h,tick_label=label,width=0.5)  
+            plt.show()
 
 
-#<5 5~7 7~9 >9
-for i in range(6 , sheet.max_row+1):
-    value = float(sheet.cell(row = i , column = 2).value)
-    if value < 5 :
-        v45.append(value)
-    elif value >= 5 and value < 7 :
-        v457.append(value)
-    elif value >= 7 and value < 9 :
-        v479.append(value)
-    elif value >= 9 :
-        v49.append(value)
+def main ():
 
+    csv_filename = (r'C:\Users\jayce\Desktop\6.csv')
+    sp_pltbar = c_sp_pltbar(csv_filename)
+    sp_pltbar.f_get_all_value()
+    sp_pltbar.f_plt_bar()
 
-x = [1,2,3,4]        
-label = ['<5','5~7','7~9','>9']     
-h = [len(v45),len(v457),len(v479),len(v49)]   
-
-plt.title('v4download',fontsize=24)
-y_major_locator=MultipleLocator(5)
-ax=plt.gca()
-ax.yaxis.set_major_locator(y_major_locator)
-
-
-plt.bar(x,h,tick_label=label,width=0.5)  
-plt.show()
+if __name__ == "__main__" :
+    main()
