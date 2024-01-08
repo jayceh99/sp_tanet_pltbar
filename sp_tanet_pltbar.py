@@ -1,7 +1,7 @@
 import openpyxl
 import csv
 import matplotlib.pyplot as plt
-from matplotlib.pyplot import MultipleLocator
+
 class c_sp_pltbar:
     def __init__(self , csv_filename) -> None:
         self.csv_filename = csv_filename
@@ -27,23 +27,27 @@ class c_sp_pltbar:
             range7_9 = 0
             range9_ = 0
             #<5 5~7 7~9 >9
+            
             for i in range(6 , self.sheet.max_row+1):
-                value = float(self.sheet.cell(row = i , column = self.round_[k]).value)
-                if value < 5 :
-                    range_5 += 1
-                elif value >= 5 and value < 7 :
-                    range5_7 += 1
-                elif value >= 7 and value < 9 :
-                    range7_9 += 1
-                elif value >= 9 :
-                    range9_ += 1
+                try:
+                    value = float(self.sheet.cell(row = i , column = self.round_[k]).value)
+                    if value < 5 :
+                        range_5 += 1
+                    elif value >= 5 and value < 7 :
+                        range5_7 += 1
+                    elif value >= 7 and value < 9 :
+                        range7_9 += 1
+                    elif value >= 9 :
+                        range9_ += 1
+                except:
+                    continue
             x = [ 1 , 2 , 3 , 4 ]        
             label = [ '<5' , '5~7' , '7~9' , '>9' ]     
             h = [ range_5 , range5_7 , range7_9 , range9_ ]   
             fig = plt.figure()
             fig.set_size_inches(12,9)
             plt.title(k,fontsize=24)
-            y_major_locator=MultipleLocator(2)
+            y_major_locator=plt.MultipleLocator(2)
             ax=plt.gca()
             ax.yaxis.set_major_locator(y_major_locator)
             plt.bar(x,h,tick_label=label,width=0.5)  
@@ -84,7 +88,7 @@ class c_sp_pltbar:
             fig = plt.figure()
             fig.set_size_inches(12,9)
             plt.title(k,fontsize=24)
-            y_major_locator=MultipleLocator(2)
+            y_major_locator=plt.MultipleLocator(2)
             ax=plt.gca()
             ax.yaxis.set_major_locator(y_major_locator)
             plt.bar(x,h,tick_label=label,width=0.5)  
@@ -122,12 +126,11 @@ class c_sp_pltbar:
             fig = plt.figure()
             fig.set_size_inches(12,9)
             plt.title(k,fontsize=24)
-            y_major_locator=MultipleLocator(2)
+            y_major_locator=plt.MultipleLocator(2)
             ax=plt.gca()
             ax.yaxis.set_major_locator(y_major_locator)
             plt.bar(x,h,tick_label=label,width=0.5)  
             plt.get_current_fig_manager().window.state('zoomed')
-            #plt.show()
             plt.savefig(fname = "C:\\Users\\jayce\\Desktop\\test_data\\10m"+k+".png" )
             plt.cla()
 
@@ -174,12 +177,11 @@ class c_sp_pltbar:
             fig = plt.figure()
             fig.set_size_inches(12,9)
             plt.title(k,fontsize=24)
-            y_major_locator=MultipleLocator(2)
+            y_major_locator=plt.MultipleLocator(2)
             ax=plt.gca()
             ax.yaxis.set_major_locator(y_major_locator)
             plt.bar(x,h,tick_label=label,width=0.5)  
             plt.get_current_fig_manager().window.state('zoomed')
-            #plt.show()
             plt.savefig(fname = "C:\\Users\\jayce\\Desktop\\test_data\\"+k+".png" )
             plt.cla()
 
