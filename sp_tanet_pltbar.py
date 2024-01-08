@@ -7,7 +7,7 @@ class c_sp_pltbar:
         self.csv_filename = csv_filename
         self.round_ = {'IPv4_Download':2 , 'IPv4_Upload':4 , 'IPv6_Download':3 , 'IPv6_Upload':5}
         self.ping_jitter_round_ = {'IPv4_Delay':6 , 'IPv4_Jitter':8 , 'IPv6_Delay':7 , 'IPv6_Jitter':9}
-        
+
     def f_get_all_value(self):
         csv_data = []
         f = open(self.csv_filename , 'r' , encoding='utf-8')
@@ -62,19 +62,22 @@ class c_sp_pltbar:
             range100_ = 0
             #<5 5~7 7~9 >9
             for i in range(6 , self.sheet.max_row+1):
-                value = float(self.sheet.cell(row = i , column = self.ping_jitter_round_[k]).value)
-                if value < 10 :
-                    range_10 += 1
-                elif value >= 10 and value < 20 :
-                    range10_20 += 1
-                elif value >= 20 and value < 30 :
-                    range20_30 += 1
-                elif value >= 30 and value < 40 :
-                    range30_40 += 1
-                elif value >= 40 and value < 100 :
-                    range40_100 += 1
-                elif value >= 100 :
-                    range100_ += 1
+                try:
+                    value = float(self.sheet.cell(row = i , column = self.ping_jitter_round_[k]).value)
+                    if value < 10 :
+                        range_10 += 1
+                    elif value >= 10 and value < 20 :
+                        range10_20 += 1
+                    elif value >= 20 and value < 30 :
+                        range20_30 += 1
+                    elif value >= 30 and value < 40 :
+                        range30_40 += 1
+                    elif value >= 40 and value < 100 :
+                        range40_100 += 1
+                    elif value >= 100 :
+                        range100_ += 1
+                except:
+                    continue
             x = [ 1 , 2 , 3 , 4 , 5 , 6 ]
             label = [ '<10' , '10~20' , '20~30' , '30~40' , '40~100' , '>100']     
             h = [ range_10 , range10_20 , range20_30 , range30_40 , range40_100 , range100_ ]   
@@ -99,17 +102,20 @@ class c_sp_pltbar:
             range11_ = 0
             #<5 5~7 7~9 >9
             for i in range(6 , self.sheet.max_row+1):
-                value = float(self.sheet.cell(row = i , column = self.round_[k]).value)
-                if value < 5 :
-                    range_5 += 1
-                elif value >= 5 and value < 7 :
-                    range5_7 += 1
-                elif value >= 7 and value < 9 :
-                    range7_9 += 1
-                elif value >= 9 and value < 11 :
-                    range9_11 += 1
-                elif value >= 11 :
-                    range11_ += 1
+                try:
+                    value = float(self.sheet.cell(row = i , column = self.round_[k]).value)
+                    if value < 5 :
+                        range_5 += 1
+                    elif value >= 5 and value < 7 :
+                        range5_7 += 1
+                    elif value >= 7 and value < 9 :
+                        range7_9 += 1
+                    elif value >= 9 and value < 11 :
+                        range9_11 += 1
+                    elif value >= 11 :
+                        range11_ += 1
+                except:
+                    continue
             x = [ 1 , 2 , 3 , 4 , 5 ]        
             label = [ '<5' , '5~7' , '7~9' , '9~11' , '>11' ]     
             h = [ range_5 , range5_7 , range7_9 , range9_11 , range11_]   
